@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Practice Handbook - 6 Core Topics with "Why Is It Used?" Comments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            line-height: 1.6;
+        }
+        .header-box {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 35px;
+            margin-bottom: 30px;
+        }
+        .topic-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.06);
+            page-break-inside: avoid;
+        }
+        .code-box {
+            background-color: #1e1e2e;
+            color: #f8f9fa;
+            border-radius: 8px;
+            padding: 18px 20px;
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        .why-comment {
+            color: #50fa7b;
+            font-weight: 600;
+        }
+        .keyword {
+            color: #ffb86c;
+            font-weight: 600;
+        }
+        .why-box {
+            background-color: #fff9db;
+            border-left: 4px solid #f59f00;
+            padding: 14px 18px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 0.92rem;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .topic-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+            .header-box { background: #1e3c72 !important; -webkit-print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body class="py-4">
+    <div class="container" style="max-width: 900px;">
+        
+        <!-- Header -->
+        <div class="header-box">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">Student Handbook</span>
+                <button onclick="window.print()" class="btn btn-sm btn-light fw-bold no-print">🖨️ Print / Save as PDF</button>
+            </div>
+            <h1 class="fw-bold mb-2">React Core Practice Notes</h1>
+            <p class="mb-0 opacity-90">6 Foundational Topics with Line-by-Line <strong>&quot;Why Is It Used?&quot;</strong> Code Explanations</p>
+        </div>
+
+        <!-- Topic 1: Props -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-primary px-3 py-2 fs-6 rounded-pill">01</span>
+                <h3 class="m-0 fw-bold">Props (Properties)</h3>
+            </div>
+            <p><strong>Concept:</strong> Props are the primary mechanism in React for passing data and callback functions downward from a Parent component to a Child component. Props are read-only (immutable).</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT USED? (Key Takeaways):</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>Dynamic UI:</strong> Reusing a single component template to render varying student or product data.</li>
+                    <li><strong>Unidirectional Data Flow:</strong> Predictable Parent-to-Child flow prevents spaghetti state.</li>
+                    <li><strong>Event Callbacks:</strong> Enables children to notify parent components of user interactions.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="why-comment">// [WHY IS IT USED?]: Object destructuring provides direct variable access without 'props.name'</span>
+<span class="why-comment">// [WHY]: Default argument 'Student' prevents runtime rendering errors if parent omits role</span>
+<span class="keyword">function</span> StudentCard({ name = <span style="color:#f1fa8c">'Student'</span>, course, isEnrolled, onNotify }) {
+  <span class="keyword">return</span> (
+    &lt;div className="card p-3 shadow-sm"&gt;
+      <span class="why-comment">{/* [WHY]: Dynamically displays data supplied by the parent */}</span>
+      &lt;h4&gt;{name}&lt;/h4&gt;
+      &lt;p&gt;Course: {course}&lt;/p&gt;
+
+      <span class="why-comment">{/* [WHY]: Conditional rendering adjusts badge styling based on boolean status */}</span>
+      &lt;span className={isEnrolled ? <span style="color:#f1fa8c">'badge bg-success'</span> : <span style="color:#f1fa8c">'badge bg-secondary'</span>}&gt;
+        {isEnrolled ? <span style="color:#f1fa8c">'Active'</span> : <span style="color:#f1fa8c">'Offline'</span>}
+      &lt;/span&gt;
+
+      <span class="why-comment">{/* [WHY]: Executes callback prop to inform parent of click event */}</span>
+      &lt;button onClick={() =&gt; onNotify(name)}&gt;Notify Parent&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+            </div>
+        </div>
+
+        <!-- Topic 2: Props Drilling -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill">02</span>
+                <h3 class="m-0 fw-bold">Props Drilling &amp; Context API Solution</h3>
+            </div>
+            <p><strong>Concept:</strong> Props Drilling happens when data must pass through intermediate components that do not actually consume the data, just to deliver it to a deeply nested child.</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT CRITICAL TO UNDERSTAND?</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>The Problem:</strong> Intermediate components become cluttered with unnecessary props and maintenance overhead.</li>
+                    <li><strong>The Solution:</strong> For deep trees or global data (theme, user auth), use <code>createContext()</code> and <code>useContext()</code>.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="keyword">import</span> { createContext, useContext, useState } <span class="keyword">from</span> <span style="color:#f1fa8c">'react'</span>;
+
+<span class="why-comment">// [WHY IS IT USED?]: Creates a global Context object for direct descendant consumption</span>
+<span class="keyword">const</span> ThemeContext = createContext();
+
+<span class="keyword">function</span> App() {
+  <span class="keyword">const</span> [theme, setTheme] = useState(<span style="color:#f1fa8c">'dark'</span>);
+  <span class="keyword">return</span> (
+    <span class="why-comment">{/* [WHY]: Provider wraps tree, exposing value to all children without manual prop drilling */}</span>
+    &lt;ThemeContext.Provider value={{ theme }}&gt;
+      &lt;MiddleComponent /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+<span class="why-comment">// [WHY CLEAN]: MiddleComponent receives zero unused props</span>
+<span class="keyword">function</span> MiddleComponent() {
+  <span class="keyword">return</span> &lt;DeepChild /&gt;;
+}
+
+<span class="keyword">function</span> DeepChild() {
+  <span class="why-comment">// [WHY IS IT USED?]: useContext directly retrieves theme from Provider</span>
+  <span class="keyword">const</span> { theme } = useContext(ThemeContext);
+  <span class="keyword">return</span> &lt;span&gt;Active Theme: {theme}&lt;/span&gt;;
+}
+            </div>
+        </div>
+
+        <!-- Topic 3: Form -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-info text-dark px-3 py-2 fs-6 rounded-pill">03</span>
+                <h3 class="m-0 fw-bold">Form Handling in React</h3>
+            </div>
+            <p><strong>Concept:</strong> React forms manage user inputs via component state and intercept default submission with <code>e.preventDefault()</code> to retain SPA behavior.</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT USED?</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>e.preventDefault():</strong> Prevents full browser page reload so in-memory React state is preserved.</li>
+                    <li><strong>[e.target.name]: value:</strong> Single reusable change handler dynamically updates any field in state.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="keyword">function</span> StudentForm() {
+  <span class="why-comment">// [WHY IS IT USED?]: Single state object centralizes all input values</span>
+  <span class="keyword">const</span> [formData, setFormData] = useState({ fullName: <span style="color:#f1fa8c">''</span>, course: <span style="color:#f1fa8c">'React'</span> });
+
+  <span class="why-comment">// [WHY IS IT USED?]: Dynamic key computation matches input name attribute</span>
+  <span class="keyword">const</span> handleChange = (e) =&gt; {
+    <span class="keyword">const</span> { name, value } = e.target;
+    <span class="why-comment">// [WHY]: Spread operator (...) preserves untouched fields</span>
+    setFormData(prev =&gt; ({ ...prev, [name]: value }));
+  };
+
+  <span class="keyword">const</span> handleSubmit = (e) =&gt; {
+    <span class="why-comment">// [WHY]: Prevents page refresh (SPA architecture requirement)</span>
+    e.preventDefault();
+    console.log(<span style="color:#f1fa8c">'Submitting payload:'</span>, formData);
+  };
+
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input name="fullName" value={formData.fullName} onChange={handleChange} /&gt;
+      &lt;button type="submit"&gt;Register&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+            </div>
+        </div>
+
+        <!-- Topic 4: Form Validation -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-danger px-3 py-2 fs-6 rounded-pill">04</span>
+                <h3 class="m-0 fw-bold">Form Validation</h3>
+            </div>
+            <p><strong>Concept:</strong> Validating input values on the client side ensures data integrity, prevents invalid network requests, and provides immediate visual feedback.</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT USED?</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>Immediate Feedback:</strong> Guides user before submission without slow server round-trips.</li>
+                    <li><strong>onBlur Validation:</strong> Waits until user finishes entering data before flagging an error for better UX.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="keyword">function</span> ValidatedForm() {
+  <span class="keyword">const</span> [email, setEmail] = useState(<span style="color:#f1fa8c">''</span>);
+  <span class="why-comment">// [WHY IS IT USED?]: Separate error state stores active validation error messages</span>
+  <span class="keyword">const</span> [error, setError] = useState(<span style="color:#f1fa8c">''</span>);
+
+  <span class="keyword">const</span> validateEmail = (val) =&gt; {
+    <span class="why-comment">// [WHY]: Regular expression checks for '@' symbol and valid domain</span>
+    <span class="keyword">const</span> regex = /^\\S+@\\S+\\.\\S+$/;
+    <span class="keyword">if</span> (!val.trim()) <span class="keyword">return</span> <span style="color:#f1fa8c">'Email is required'</span>;
+    <span class="keyword">if</span> (!regex.test(val)) <span class="keyword">return</span> <span style="color:#f1fa8c">'Invalid email format'</span>;
+    <span class="keyword">return</span> <span style="color:#f1fa8c">''</span>;
+  };
+
+  <span class="keyword">return</span> (
+    &lt;form onSubmit={(e) =&gt; { e.preventDefault(); setError(validateEmail(email)); }}&gt;
+      <span class="why-comment">{/* [WHY]: Dynamic CSS class highlights border in red when invalid */}</span>
+      &lt;input 
+        className={error ? <span style="color:#f1fa8c">'border-danger'</span> : <span style="color:#f1fa8c">'border-success'</span>} 
+        value={email} 
+        onChange={(e) =&gt; { setEmail(e.target.value); setError(<span style="color:#f1fa8c">''</span>); }}
+        onBlur={() =&gt; setError(validateEmail(email))}
+      /&gt;
+      <span class="why-comment">{/* [WHY]: Conditional rendering displays message only when error exists */}</span>
+      {error && &lt;span style={{ color: <span style="color:#f1fa8c">'red'</span> }}&gt;{error}&lt;/span&gt;}
+      &lt;button type="submit"&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+            </div>
+        </div>
+
+        <!-- Topic 5: Reusable Component -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-success px-3 py-2 fs-6 rounded-pill">05</span>
+                <h3 class="m-0 fw-bold">Reusable Component (DRY Principle)</h3>
+            </div>
+            <p><strong>Concept:</strong> Building modular, generic components that can be used repeatedly with different props and children across an application.</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT USED?</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>DRY Principle:</strong> Eliminates duplicate HTML and copy-pasted styling.</li>
+                    <li><strong>Central Maintenance:</strong> Updating 1 component file automatically updates every instance site-wide.</li>
+                    <li><strong>children Prop:</strong> Allows custom nested text, icons, and elements inside the component.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="why-comment">// [WHY IS IT USED?]: Configurable props (variant, size, children) enable universal reusability</span>
+<span class="keyword">function</span> CustomButton({ variant = <span style="color:#f1fa8c">'primary'</span>, size = <span style="color:#f1fa8c">'md'</span>, children, onClick }) {
+  <span class="why-comment">// [WHY]: Template literal dynamically creates class names</span>
+  <span class="keyword">const</span> sizeClass = size === <span style="color:#f1fa8c">'sm'</span> ? <span style="color:#f1fa8c">'btn-sm'</span> : size === <span style="color:#f1fa8c">'lg'</span> ? <span style="color:#f1fa8c">'btn-lg'</span> : <span style="color:#f1fa8c">''</span>;
+  
+  <span class="keyword">return</span> (
+    &lt;button className={`btn btn-${variant} ${sizeClass} m-1`} onClick={onClick}&gt;
+      <span class="why-comment">{/* [WHY]: children prop renders whatever text or icons the parent passes */}</span>
+      {children}
+    &lt;/button&gt;
+  );
+}
+            </div>
+        </div>
+
+        <!-- Topic 6: Controlled Component -->
+        <div class="topic-card">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge bg-dark px-3 py-2 fs-6 rounded-pill">06</span>
+                <h3 class="m-0 fw-bold">Controlled Component</h3>
+            </div>
+            <p><strong>Concept:</strong> A form input whose current value is governed by React State. Formula: <code>value = &#123;state&#125;</code> + <code>onChange = &#123;handler&#125;</code>.</p>
+
+            <div class="why-box">
+                <strong>WHY IS IT USED?</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>Single Source of Truth:</strong> Input element and React State are always in 100% synchronization.</li>
+                    <li><strong>Instant Transformation:</strong> Allows on-the-fly uppercase conversion, masking, or character limits.</li>
+                    <li><strong>Programmatic Reset:</strong> Simply calling <code>setState('')</code> clears the input without touching the DOM.</li>
+                </ul>
+            </div>
+
+            <div class="code-box">
+<span class="keyword">function</span> ControlledDemo() {
+  <span class="why-comment">// [WHY IS IT USED?]: State is the authoritative Single Source of Truth</span>
+  <span class="keyword">const</span> [text, setText] = useState(<span style="color:#f1fa8c">''</span>);
+
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      <span class="why-comment">{/* [WHY]: value={text} locks the DOM value to React state */}</span>
+      <span class="why-comment">{/* [WHY]: onChange transforms input to UPPERCASE in real time */}</span>
+      &lt;input 
+        value={text} 
+        onChange={(e) =&gt; setText(e.target.value.toUpperCase())} 
+        placeholder="Type here..." 
+      /&gt;
+      &lt;p&gt;Live State: {text}&lt;/p&gt;
+      <span class="why-comment">{/* [WHY]: Programmatic control clears input by resetting state */}</span>
+      &lt;button onClick={() =&gt; setText(<span style="color:#f1fa8c">''</span>)}&gt;Clear via State&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-muted py-4 small border-top">
+            Created for React Students &amp; Teachers | Practice Route &copy; 2026
+        </div>
+
+    </div>
+</body>
+</html>
