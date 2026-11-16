@@ -56,6 +56,8 @@ function ImageSlider() {
                 Servies
             </NavLink>
             <h1>Users List</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus placeat, vel provident voluptates tenetur velit, sint veritatis est maxime earum fuga! Minima quibusdam ab sed ipsum, ducimus voluptatum dicta nesciunt!</p>
+            <h3>jin ustad</h3>
 
 
             {/* jsx means javascript in html */}
