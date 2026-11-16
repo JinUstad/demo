@@ -3,11 +3,12 @@ import { useState } from 'react'
 function FormDemo() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [number, setNumber] = useState('')
     const [submitted, setSubmitted] = useState(null)
 
     const handleSubmit = (e) => {
         e.preventDefault() // Prevents page reload!
-        setSubmitted({ name, email })
+        setSubmitted({ name, email, number })
     }
 
     return (
@@ -39,6 +40,17 @@ function FormDemo() {
                             required
                         />
                     </div>
+                    <div className="mb-3">
+                        <label className="form-label small fw-bold">Number:</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Enter your email"
+                            value={number}
+                            onChange={(e) => setNumber(e.target.value)}
+                            required
+                        />
+                    </div>
 
                     <button type="submit" className="btn btn-primary">
                         Submit Form (e.preventDefault)
@@ -51,6 +63,7 @@ function FormDemo() {
                         <strong>Form Submitted! (Page did not reload):</strong>
                         <div>Name: {submitted.name}</div>
                         <div>Email: {submitted.email}</div>
+                        <div>Email: {submitted.number}</div>
                     </div>
                 )}
             </div>
@@ -59,7 +72,7 @@ function FormDemo() {
             <div className="bg-dark text-white p-3 rounded small font-monospace">
                 <div className="text-warning mb-1">// Simple Form Handling:</div>
                 <pre className="m-0 text-light" style={{ whiteSpace: 'pre-wrap' }}>
-{`function FormExample() {
+                    {`function FormExample() {
   const [name, setName] = useState('');
 
   const handleSubmit = (e) => {

@@ -49,7 +49,7 @@ function PropsDrillingDemo() {
             <div className="bg-dark text-white p-3 rounded small font-monospace">
                 <div className="text-warning mb-1">// Props Drilling Concept:</div>
                 <pre className="m-0 text-light" style={{ whiteSpace: 'pre-wrap' }}>
-{`// Parent passes to Middle -> Middle passes to Bottom
+                    {`// Parent passes to Middle -> Middle passes to Bottom
 function Parent() {
   const [data, setData] = useState("Hello");
   return <Middle data={data} />;
