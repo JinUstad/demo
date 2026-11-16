@@ -58,6 +58,7 @@ function ImageSlider() {
             <h1>Users List</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus placeat, vel provident voluptates tenetur velit, sint veritatis est maxime earum fuga! Minima quibusdam ab sed ipsum, ducimus voluptatum dicta nesciunt!</p>
             <h3>jin ustad</h3>
+            <img src="https://imgd.aeplcdn.com/664x374/n/cw/ec/1/versions/--standard1757579629039.jpg?q=80" alt="" />
 
 
             {/* jsx means javascript in html */}
